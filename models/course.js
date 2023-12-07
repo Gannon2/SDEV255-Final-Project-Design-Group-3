@@ -1,20 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const blogSchema = new Schema({
+const courseSchema = new Schema({
     title: {
         type: String,
         required: true
     },
-    snippet: {
+    credits: {
+        type: Number,
+        required: true
+    },
+    subject: {
         type: String,
         required: true
     },
-    body: {
+    desc: {
         type: String,
         required: true
     }
 }, { timestamps: true });
 
-const Blog = mongoose.model('Blog', blogSchema);
-module.exports = Blog;
+const Course = mongoose.model('Course', courseSchema);
+module.exports = Course;

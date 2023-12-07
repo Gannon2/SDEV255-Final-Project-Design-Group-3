@@ -57,13 +57,13 @@
             margin-left: 20px;
         }
         /* index style */
-        .blog a{
+        .course a{
             display: block;
             margin: 40px 0;
             padding-left: 30px;
             border-left: 6px solid crimson;
         }
-        .blog a:hover h3{
+        .course a:hover h3{
             color: crimson;
         }
         /* details style */
@@ -82,25 +82,37 @@
             box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
         }
         /* create style */
-        .create-blog form{
+        .create-course form{
             max-width: 400px;
             margin: 0 auto;
         }
-        .create-blog input,
-        .create-blog textarea{
+        .create-course select{
+            display: block;
+            width: 25%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        .create-course #credits{
+            display: block;
+            width: 20%;
+            margin: 10px 0;
+            padding: 8px;
+        }
+        .create-course input,
+        .create-course textarea{
             display: block;
             width: 100%;
             margin: 10px 0;
             padding: 8px;
         }
-        .create-blog label{
+        .create-course label{
             display: block;
             margin-top: 24px;
         }
         textarea{
             height: 120px;
         }
-        .create-blog button{
+        .create-course button{
             margin-top: 20px;
             background: crimson;
             color: white;

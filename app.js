@@ -1,136 +1,106 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const Blog = require('./models/blog')
+const Course = require('./models/course');
 
-
-
-//express app
+// express app
 const app = express();
-//Connect to mongoDB
-const dbURI = 'mongodb+srv://kesny88:Ny081293@sdev255.7x1o0er.mongodb.net/SDEV255-lab?retryWrites=true&w=majority'
+
+// connect to mongodb & listen for requests
+const dbURI = 'mongodb+srv://netninja:test12345@cluster01.v6predi.mongodb.net/node-tuts?retryWrites=true&w=majority';
 mongoose.connect(dbURI)
-    .then((result) => app.listen(3000))
-    .catch((err) => console.log(err));
+    .then(result => app.listen(3000))
+    .catch(err => console.log(err));
 
-
-//register view engine
+// register view engine
 app.set('view engine', 'ejs');
 
-
-//listen for requests
-//app.listen(3000);
-
-//middleware & static files
+// middleware & static files
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-
-
-
-//mongoose and mongo sandbox routes
-// app.get('/add-blog', (req, res) => {
-//     const blog = new Blog({
-//         title: 'new blog 2',
-//         snippet: 'about my new blog',
-//         body: ' more about my new blog'
-//     });
-
-//     blog.save()
-
-//     .then((result) => {
-//         res.send(result)
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     });
-// });
-
-// app.get('/all-blogs', (req, res) => {
-//     Blog.find()
-//     .then((result) => {
-//         res.send(result);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     });
-// });
-
-// app.get('/single-blog', (req, res) => {
-//     Blog.findById('656e6777d4a9029fed64b5dc')
-//     .then((result) => {
-//         res.send(result);
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     })
-// })
-
-//routes
-app.get('/', (req, res) => {
-    res.redirect('/blogs');
-
+app.use((req, res, next) => {
+    res.locals.path = req.path;
+    next();
 });
 
-
+// routes
+app.get('/', (req, res) => {
+    res.redirect('/courses');
+});
 
 app.get('/about', (req, res) => {
-    //res.send('<p>about</p>');
-    res.render('about', {title: 'About'});
+    res.render('about', { title: 'About' });
 });
 
-//blog routes
-app.get('/blogs', (req, res) => {
-    Blog.find().sort({ CreatedAt: -1 })
-    .then((result) => {
-        res.render('index', { title: 'All Blogs', blogs: result })
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-})
+// course routes
+const subjects = [
+    "ABRK", "ACCT", "ADMF", "AGRI", "ALTF", "AMSL", "ANTH", "AOLS", "APHY", "ARAB",
+    "ARTH", "ARTS", "ASTR", "AUBR", "AUTI", "AVIM", "AVIT", "BCOM", "BCOT", "BCTI",
+    "BIOL", "BIOT", "BOAT", "BUSI", "BUSN", "CARD", "CATX", "CHEM", "CHIN", "CIMG",
+    "CINS", "COMM", "CONT", "CPIN", "CPTR", "CRIM", "CSCI", "CSIA", "CSTC", "DBMS",
+    "DENT", "DESN", "DHYG", "DMSI", "ECED", "ECON", "EDSN", "EDUC", "EECT", "EETC",
+    "ENGL", "ENGR", "ENGT", "ENRG", "ENTR", "EPCS", "ESOL", "EXER", "FREN", "GENS",
+    "GEOG", "GEOL", "GERM", "GLOB", "GRDN", "HIMT", "HIST", "HLHS", "HOSP", "HPER",
+    "HSPS", "HUMA", "HUMS", "HVAC", "INDT", "INFM", "ITSP", "IVYC", "IVYT", "LEGS",
+    "LIBA", "LOGM", "MAMO", "MATH", "MEAS", "MEDL", "MEMS", "METC", "MKTG", "MORT",
+    "MPRO", "MRIT", "MRTC", "MTTC", "NANO", "NETI", "NGAS", "NRSG", "OPTI", "PAET",
+    "PARA", "PARM", "PHAR", "PHIL", "PHLB", "PHOT", "PHYS", "PLAS", "POLS", "PPTC",
+    "PRCM", "PROC", "PSYC", "PTAS", "QUAL", "RADT", "RDTH", "RESP", "SCIN", "SDEV",
+    "SMDI", "SOCI", "SPAN", "SPED", "SURG", "SUST", "SVAD", "TMAS", "TRCK", "VIDT",
+    "VISC", "WELD"
+];
 
-app.post('/blogs', (req, res) => {
-    const blog = new Blog(req.body);
+app.get('/courses/create', (req, res) => {
+    res.render('create', { title: 'Create a new course', subjects });
+});
 
-    blog.save()
-    .then((result) => {
-    res.redirect('/blogs');
-    })
-    .catch((err) => {
-        console.log(err);
-    })
-})
-
-app.get('/blogs/:id', (req, res) => {
-    const id = req.params.id;
-    Blog.findById(id)
+app.get('/courses', (req, res) => {
+    Course.find().sort({ createdAt: -1 })
     .then(result => {
-        res.render('details', { blog: result, title: 'Blog Details'});
+        res.render('index', { courses: result, title: 'All courses' });
     })
     .catch(err => {
         console.log(err);
-    })
-})
+    });
+});
 
-app.delete('/blogs/:id', (req, res) => {
-    const id = req.params.id;
+app.post('/courses', (req, res) => {
+    const course = new Course(req.body);
 
-    Blog.findByIdAndDelete(id)
+    course.save()
     .then(result => {
-        res.json({redirect: '/blogs' })
-    } )
+        res.redirect('/courses');
+    })
     .catch(err => {
         console.log(err);
+    });
+});
+
+app.get('/courses/:id', (req, res) => {
+  const id = req.params.id;
+  Course.findById(id)
+    .then(result => {
+      res.render('details', { course: result, title: 'Course Details' });
     })
-})
+    .catch(err => {
+      console.log(err);
+    });
+});
 
-//redirects
-app.get('/blogs/create', (req, res) => {
-    res.render('create', {title: 'Create a new Blog'});
-})
+app.delete('/courses/:id', (req, res) => {
+    const id = req.params.id;
 
-//404 page
+    Course.findByIdAndDelete(id)
+    .then(result => {
+        res.json({ redirect: '/courses' });
+    })
+    .catch(err => {
+        console.log(err);
+    });
+});
+
+// 404 page
 app.use((req, res) => {
-    res.status(404).render('404', {title: '404'});
-})
+    res.status(404).render('404', { title: '404' });
+});
