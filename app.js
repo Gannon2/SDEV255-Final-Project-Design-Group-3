@@ -7,7 +7,7 @@ const Course = require('./models/course');
 const app = express();
 
 // connect to mongodb & listen for requests
-const dbURI = 'mongodb+srv://netninja:test12345@cluster01.v6predi.mongodb.net/node-tuts?retryWrites=true&w=majority';
+const dbURI = "";
 mongoose.connect(dbURI)
     .then(result => app.listen(3000))
     .catch(err => console.log(err));
