@@ -1,0 +1,16 @@
+<!-- Todo: Make this page more presentable.
+     Include add redirects to either a:
+      -- The sign in screen for a 401
+      -- The Home screen for a 404 -->
+
+<%- include('./partials/header.ejs') %>
+<div class="not-found content">
+  <% if (err = 404) { %>
+  <div class="not-found content">OOPS, page not found</div>
+  <% } else if (err = 401) { %>
+  <div class="not-found content">
+    OOPS, authorization was invalid or expired. Try logging in.
+  </div>
+  <% } %>
+</div>
+<%- include('./partials/footer.ejs') %>
