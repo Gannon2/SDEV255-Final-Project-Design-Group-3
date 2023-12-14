@@ -1,0 +1,20 @@
+<%- include('../partials/header.ejs') %>
+<div class="course content">
+    <h2>All Courses</h2>
+    <% if (courses.length> 0) { %>
+        <% courses.forEach(course=> { %>
+            <a class="single" href="/courses/<%= course._id%>">
+                <h2 class="title">
+                    <%= course.title %>
+                        </h3>
+                        <h3 class="subject">Subject: <%= course.subject %>
+                </h2>
+                <h3 class="credits">Credits: <%= course.credits %>
+                        </h2>
+            </a>
+            <% }) %>
+                <% } else { %>
+                    <p>There are no courses to display...</p>
+                    <% } %>
+</div>
+<%- include('../partials/footer.ejs') %>
