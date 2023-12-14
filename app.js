@@ -21,6 +21,7 @@ app.use(cookieParser());
 app.use((req, res, next) => {
     res.locals.path = req.path;
     next();
+
 });
 
 // connect to mongodb & listen for requests
@@ -40,6 +41,13 @@ app.get('/home', (req, res) => res.render('home', { title: 'Home' }));
 app.use('/courses', requireAuth, courseRoutes);
 
 // 404 page
-app.use((req, res) => {
-    res.status(404).render('Error', { title: 'Error 404', err: '404' });
+app.use((req, res, next) => { 
+    res.status(404).redirect('Error', { title: 'Error 404', err: '404' });
+
+});
+
+// 401 page
+app.use((req, res, next) => { 
+    res.status(401).redirect('Error', { title: 'Error 401', err: '401' });
+
 });

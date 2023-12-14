@@ -1,4 +1,5 @@
 const Course = require('../models/Course');
+const { body, validationResult } = require('express-validator');
 
 // Todo: Implement error handling / validation for creating & updating courses
 
@@ -6,7 +7,7 @@ const Course = require('../models/Course');
 //  to change the view based on the value ( 0 = student, 1 = teacher )
 
 
-module.exports.course_index = (req, res) => {
+const course_index = (req, res) => {
   Course.find()
     .sort({ createdAt: -1 })
     .then((result) => {
@@ -17,13 +18,13 @@ module.exports.course_index = (req, res) => {
     });
 };
 
-module.exports.course_details = (req, res) => {
+const course_details = (req, res) => {
   const id = req.params.id;
   Course.findById(id)
     .then((result) => {
       res.render('courses/details', {
         course: result,
-        title: 'course Details',
+        title: 'Course Details',
       });
     })
     .catch((err) => {
@@ -167,27 +168,26 @@ const subjects = [
   "WELD",
 ];
 
-module.exports.course_create_get = (req, res) => {
+const course_create_get = (req, res) => {
   res.render('courses/create', { title: 'Create a new course', subjects });
 };
 
 
 // this does not work properly. you're welcome to attempt a fix, but i'm prolly gonna ask hamby for advice
-module.exports.course_create_post = async (req, res) => {
-    const { author, title, subject, credits, description } = req.body;
+const course_create_post = async (req, res) => {
+    const course = new Course(req.body);
 
-    try {
-        const course = await Course.create({ author, title, subject, credits, description, students: []})
-        res.status(201).redirect('/courses/' + course._id);
-    }
-    catch (err) {
-//        const errors = handleErrors(err);
-        res.status(400).json("{ errors }");
-    }
+    course.save()
+    .then((result) => {
+      res.redirect('/courses');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
     
 }
 
-module.exports.course_delete = (req, res) => {
+const course_delete = (req, res) => {
   const id = req.params.id;
 
   Course.findByIdAndDelete(id)
@@ -198,3 +198,11 @@ module.exports.course_delete = (req, res) => {
       console.log(err);
     });
 };
+
+module.exports = {
+  course_index,
+  course_details,
+  course_create_get,
+  course_create_post,
+  course_delete
+}
