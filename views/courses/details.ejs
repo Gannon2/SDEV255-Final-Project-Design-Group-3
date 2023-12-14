@@ -1,0 +1,29 @@
+<%- include("../partials/header.ejs") %>
+
+<div class="details content">
+  <h2><%= course.title %></h2>
+  <p>Subject: <%= course.subject %></p>
+  <p>Credits: <%= course.credits %></p>
+  <div class="content">
+    <h2>Description</h2>
+    <p><%= course.desc %></p>
+  </div>
+  <a class="delete" data-doc="<%= course._id %>">delete</a>
+</div>
+
+<%- include("../partials/footer.ejs") %>
+
+<script>
+  const trashcan = document.querySelector("a.delete");
+
+  trashcan.addEventListener("click", (e) => {
+    const endpoint = `/courses/${trashcan.dataset.doc}`;
+
+    fetch(endpoint, {
+      method: "DELETE",
+    })
+      .then((response) => response.json())
+      .then((data) => (window.location.href = data.redirect))
+      .catch((err) => console.log(err));
+  });
+</script>

@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Viewer | <%= title %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <nav>
+    <div class="site-title">
+      <a href="/home">Course Viewer</a>
+      <p>Group 3 Project</p>
+    </div>
+    <ul>
+      <% if (user) { %>
+        <li>Welcome, <%= user.fname %>
+        </li>
+        <li><a href="/">All Courses</a></li>
+        <li><a href="/courses">My Courses</a></li>
+        <li><a href="/logout">Log out</a></li>
+        <% } else { %>
+          <li><a href="/login">Log in</a></li>
+          <li><a href="/signup" class="btn">Sign up</a></li>
+          <li><a href="/teacher" class="btn">Teacher</a></li>
+
+          <% } %>
+    </ul>
+  </nav>

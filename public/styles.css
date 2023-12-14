@@ -19,17 +19,21 @@
             justify-content: space-between;
             margin-bottom: 60px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 3px solid #3A4D39;
             text-transform: uppercase;
+            background-color: #557C55;
+            
         }
         nav ul{
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            color: white;
         }
         nav li{
             list-style-type: none;
             margin-left: 20px;
+            
         }
 
         nav h1{
@@ -37,8 +41,9 @@
 
         }
         nav p, nav a{
-            color: #777;
+            color: white;
             font-weight: 300;
+
         }
         footer{
             color: #777;
@@ -82,37 +87,37 @@
             box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
         }
         /* create style */
-        .create-course form{
+        .form-div form{
             max-width: 400px;
             margin: 0 auto;
         }
-        .create-course select{
+        .form-div select{
             display: block;
             width: 25%;
             margin: 10px 0;
             padding: 8px;
         }
-        .create-course #credits{
+        .form-div #credits{
             display: block;
             width: 20%;
             margin: 10px 0;
             padding: 8px;
         }
-        .create-course input,
-        .create-course textarea{
+        .form-div input,
+        .form-div textarea{
             display: block;
             width: 100%;
             margin: 10px 0;
             padding: 8px;
         }
-        .create-course label{
+        .form-div label{
             display: block;
             margin-top: 24px;
         }
         textarea{
             height: 120px;
         }
-        .create-course button{
+        .form-div button{
             margin-top: 20px;
             background: crimson;
             color: white;
@@ -122,3 +127,21 @@
             cursor: pointer;
         }
 
+        .btnClass{
+            display: block;
+            margin: 40px 0;
+            padding-left: 30px;
+            border-left: 6px solid #527853;
+        }
+        .btnClass:hover h3{
+            color: #527853;
+        }
+
+        .welcome {
+            font-size: 35px;
+            color: #557C55;
+        }
+
+        .allCourse {
+            font-size: 20px;
+        }
