@@ -199,10 +199,39 @@ const course_delete = (req, res) => {
     });
 };
 
+
+const addToSchedule = (req, res) => {
+  const { courseId, userId } = req.params;
+
+  Course.findByIdAndUpdate(courseId, { $push: { students: userId } })
+    .then((result) => {
+      res.json({ message: 'Course added to schedule successfully' });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+
+const getUserCourses = (req, res) => {
+  const { userId } = req.params;
+
+  Course.find({ students: userId })
+    .then((userCourses) => {
+      res.json(userCourses);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+
 module.exports = {
   course_index,
   course_details,
   course_create_get,
   course_create_post,
-  course_delete
+  course_delete,
+  addToSchedule,
+  getUserCourses
 }
