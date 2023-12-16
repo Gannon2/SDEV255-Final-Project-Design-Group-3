@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 // connect to mongodb & listen for requests
-const dbURI = "mongodb+srv://SDEV255:group3@sdev255.7x1o0er.mongodb.net/projectDB?retryWrites=true&w=majority";
+const dbURI =  "mongodb+srv://SDEV255:group3@sdev255.7x1o0er.mongodb.net/addCourse?retryWrites=true&w=majority";
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => app.listen(3000))
     .catch(err => console.log(err));
@@ -35,11 +35,14 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // course routes
 
 app.get('*', checkUser);
-app.get('/', (req, res) => res.render('home', { title: 'Home' }));
+app.get('/', (req, res) => res.redirect('/courses'));
 app.use(authRoutes);
 app.get('/home', (req, res) => res.render('home', { title: 'Home' }));
 app.use('/courses', requireAuth, courseRoutes);
-app.get('/teacher', (req, res) => res.render ('teacher', { title: 'Teacher Name'}))
+app.get('/mycourse', (req, res) => {
+    res.render('mycourse', {title: 'My Course'});
+});
+app.get('/teacher', (req, res) => res.render ('teacher', { title: 'Teacher'}))
 app.use('/teacher/add-course', (req, res) => {
     const { courseName, courseCode } = req.body;
     res.redirect('/teacher');
