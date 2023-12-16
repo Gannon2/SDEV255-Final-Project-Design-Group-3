@@ -193,3 +193,8 @@ textarea{
         .site-title h1 {
             color: white;
         }
+
+        .content h2 {
+            padding-top: 20px;
+
+        }
