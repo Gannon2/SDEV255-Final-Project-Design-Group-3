@@ -39,7 +39,11 @@ app.get('/', (req, res) => res.render('home', { title: 'Home' }));
 app.use(authRoutes);
 app.get('/home', (req, res) => res.render('home', { title: 'Home' }));
 app.use('/courses', requireAuth, courseRoutes);
-
+app.get('/teacher', (req, res) => res.render ('teacher', { title: 'Teacher Name'}))
+app.use('/teacher/add-course', (req, res) => {
+    const { courseName, courseCode } = req.body;
+    res.redirect('/teacher');
+});
 // 404 page
 app.use((req, res, next) => { 
     res.status(404).redirect('Error', { title: 'Error 404', err: '404' });
