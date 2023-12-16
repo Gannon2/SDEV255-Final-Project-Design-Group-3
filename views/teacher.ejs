@@ -1,3 +1,42 @@
 <%- include('./partials/header'); -%>
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+  <h1>Welcome, <%= teacherName %></h1>
+
+  <h2>Courses</h2>
+  <ul>
+    <% for (let course of courses) { %>
+      <li><%= course.name %> - <%= course.code %>
+        <form method="post" action="/teacher/delete-course">
+          <input type="hidden" name="courseId" value="<%= course.id %>">
+          <button type="submit">Delete</button>
+        </form>
+        <form method="get" action="/teacher/edit-course">
+          <input type="hidden" name="courseId" value="<%= course.id %>">
+          <button type="submit">Edit</button>
+        </form>
+      </li>
+    <% } %>
+  </ul>
+
+  <h2>Add New Course</h2>
+  <form method="post" action="/teacher/add-course">
+    <label for="courseName">Course Name:</label>
+    <input type="text" id="courseName" name="courseName" required>
+    
+    <label for="courseCode">Course Code:</label>
+    <input type="text" id="courseCode" name="courseCode" required>
+
+    <button type="submit">Add Course</button>
+  </form>
+</body>
+</html>
+</head>
+
+
 <%- include('./partials/footer'); -%>
