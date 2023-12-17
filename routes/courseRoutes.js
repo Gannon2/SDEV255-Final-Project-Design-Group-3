@@ -12,10 +12,6 @@ router.post('/create', courseController.course_create_post);
 router.get('/:id', courseController.course_details);
 router.delete('/:id', courseController.course_delete);
 
-// Add course to user's schedule
-router.post('/add-to-schedule', courseController.addToSchedule);
-
-// View courses for a user
-router.get('/user-courses', courseController.getUserCourses);
+router.post('/add-to-schedule', authMiddleware.requireAuth, courseController.addToSchedule);
 
 module.exports = router;

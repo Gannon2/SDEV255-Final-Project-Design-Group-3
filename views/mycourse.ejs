@@ -6,7 +6,11 @@
 
   <div class="headings">
     <h2>All Courses</h2>
-
+    <ul>
+      <% user.courses.forEach(course => { %>
+        <li><%= Course %></li>
+      <% }); %>
+    </ul>
   
   </div>
 </header>

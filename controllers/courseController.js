@@ -1,4 +1,5 @@
 const Course = require('../models/Course');
+const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
 
 // Todo: Implement error handling / validation for creating & updating courses
@@ -199,31 +200,51 @@ const course_delete = (req, res) => {
     });
 };
 
+const addToSchedule = async (req, res) => {
+  const courseId = req.body.courseId; // Assuming you send courseId in the request body
+  const userId = req.User; // Assuming user information is stored in req.user
 
-const addToSchedule = (req, res) => {
-  const { courseId, userId } = req.params;
+  try {
+    // Find the course by ID
+    const course = await Course.findById(courseId);
 
-  Course.findByIdAndUpdate(courseId, { $push: { students: userId } })
-    .then((result) => {
-      res.json({ message: 'Course added to schedule successfully' });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    // Check if the course exists
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    // Add the course to the user's courses array
+    await User.findByIdAndUpdate(userId, { $addToSet: { courses: courseId } });
+
+    res.redirect( '/mycourse' );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
+//I tried this one but I keep getting user not authenticated.
+// const addToSchedule = async (req, res) => {
+//   try {
+//     const courseId = req.params.id;
+//     const userId = req.params.id; 
 
-const getUserCourses = (req, res) => {
-  const { userId } = req.params;
+//     // Check if userId is not available
+//     if (!userId) {
+//       return res.status(401).json({ error: 'User not authenticated' });
+//     }
 
-  Course.find({ students: userId })
-    .then((userCourses) => {
-      res.json(userCourses);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+//     // Add the course to the user's courses array
+//     await User.findByIdAndUpdate(userId, { $addToSet: { courses: courseId } });
+
+//     // Redirect or send a response as needed
+//     res.redirect('/mycourse');
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ err: 'Internal server error' });
+//   }
+// };
+
 
 
 module.exports = {
@@ -232,6 +253,5 @@ module.exports = {
   course_create_get,
   course_create_post,
   course_delete,
-  addToSchedule,
-  getUserCourses
+  addToSchedule
 }

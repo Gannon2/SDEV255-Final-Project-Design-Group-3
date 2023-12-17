@@ -11,6 +11,11 @@
                 </h2>
                 <h3 class="credits">Credits: <%= course.credits %>
                         </h2>
+                <!-- Button to add the course to the user's schedule -->
+                <form action="/courses/add-to-schedule" method="POST">
+                    <input type="hidden" name="courseId" value="<%= course._id %>">
+                    <button type="submit">Add to Cart</button>
+                </form>
             </a>
             <% }) %>
                 <% } else { %>
