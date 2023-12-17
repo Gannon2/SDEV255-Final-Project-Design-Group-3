@@ -201,49 +201,29 @@ const course_delete = (req, res) => {
 };
 
 const addToSchedule = async (req, res) => {
-  const courseId = req.body.courseId; // Assuming you send courseId in the request body
-  const userId = req.User; // Assuming user information is stored in req.user
+  let id = req.params.id.trim(); 
+  let user_id = req.body.user_id;
+  await Course.findByIdAndUpdate(id, {$push: {studnets: new mongoose.Types.ObjectId(user_id)}}, {new: true})
+  .then((result) => {
+      res.json({ redirect: '/mycourse' });
+      
+  })
+  .catch(err => {
+      console.log(err);
+  });
+}
 
-  try {
-    // Find the course by ID
-    const course = await Course.findById(courseId);
-
-    // Check if the course exists
-    if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
-    }
-
-    // Add the course to the user's courses array
-    await User.findByIdAndUpdate(userId, { $addToSet: { courses: courseId } });
-
-    res.redirect( '/mycourse' );
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-//I tried this one but I keep getting user not authenticated.
-// const addToSchedule = async (req, res) => {
-//   try {
-//     const courseId = req.params.id;
-//     const userId = req.params.id; 
-
-//     // Check if userId is not available
-//     if (!userId) {
-//       return res.status(401).json({ error: 'User not authenticated' });
-//     }
-
-//     // Add the course to the user's courses array
-//     await User.findByIdAndUpdate(userId, { $addToSet: { courses: courseId } });
-
-//     // Redirect or send a response as needed
-//     res.redirect('/mycourse');
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ err: 'Internal server error' });
-//   }
-// };
+const dropClass = async (req, res) => {
+  let id = req.params.id.trim(); 
+  let user_id = req.body.user_id;
+  await Course.findByIdAndUpdate(id, {$pull: {students: new mongoose.Types.ObjectId(user_id)}}, {new: true})
+  .then((result) => {
+      res.json({ redirect: '/mycourse' });
+  })
+  .catch(err => {
+      console.log(err);
+  });
+}
 
 
 
@@ -253,5 +233,6 @@ module.exports = {
   course_create_get,
   course_create_post,
   course_delete,
-  addToSchedule
+  addToSchedule,
+  dropClass
 }
